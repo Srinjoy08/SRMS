@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+    "-//Hibernate/Hibernate Configuration DTD//EN"
+    "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+ 
+<hibernate-configuration>
+    <session-factory>
+		<mapping class="com.pack.model.Plane" />
+		<mapping class="com.pack.model.Owner" />
+		<mapping class="com.pack.model.HangarStatus" />
+		<mapping class="com.pack.model.Hangar" />
+		<mapping class="com.pack.model.User" />
+		<mapping class="com.pack.model.Pilot" />
+    </session-factory>
+</hibernate-configuration>
