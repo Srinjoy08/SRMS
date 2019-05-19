@@ -1,0 +1,61 @@
+.display-5 {
+	font-size: 1.5rem;
+	font-weight: 300;
+	line-height: 1.2;
+}
+
+.jumbo {
+	margin-top: 100px;
+	background: rgba(78, 93, 108, 0.9);
+}
+
+.top-header {
+	height: 850px;
+}
+
+.section, header, footer {
+	position: relative;
+	background-position: center center;
+	background-size: cover;
+}
+
+.section-bg>div {
+	z-index: 1;
+}
+
+.verticle-center {
+	top: 50%;
+	position: absolute;
+	left: 0;
+	right: 0;
+	transform: translateY(-50%);
+	color: black;
+}
+
+.display-flex {
+	display: flex;
+	align-items: center;
+	padding: 25px;
+	background: rgba(255, 255, 255, 0.75);
+}
+
+.logo {
+	display: inline-block;
+}
+
+.row {
+	
+	margin-left: 255px;
+}
+.btn-new-bg{
+	background-color: #1a95cc;
+}
+
+.pg {
+    font-size: 1.2em;
+}
+.txt{
+	font-size:14pt;
+	border:2px solid #1c88cd;
+	border-radius:8px;
+}

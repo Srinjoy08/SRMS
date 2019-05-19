@@ -1,1 +1,1 @@
-<%response.sendRedirect("/SRMS/login"); %>
+<%response.sendRedirect("/SRMS/loginAdminPage"); %>

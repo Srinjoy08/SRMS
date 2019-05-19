@@ -5,11 +5,7 @@
  
 <hibernate-configuration>
     <session-factory>
-		<mapping class="com.pack.model.Plane" />
-		<mapping class="com.pack.model.Owner" />
-		<mapping class="com.pack.model.HangarStatus" />
-		<mapping class="com.pack.model.Hangar" />
-		<mapping class="com.pack.model.User" />
-		<mapping class="com.pack.model.Pilot" />
+		<mapping class="com.pack.model.Admin" />
+		<mapping class="com.pack.model.Resident" />
     </session-factory>
 </hibernate-configuration>
