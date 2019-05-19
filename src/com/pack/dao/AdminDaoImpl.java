@@ -1,5 +1,7 @@
 package com.pack.dao;
 
+import java.util.List;
+
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -7,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.pack.model.Admin;
+import com.pack.model.Resident;
 @Repository
 public class AdminDaoImpl implements AdminDao {
 	@Autowired
@@ -42,6 +45,41 @@ public class AdminDaoImpl implements AdminDao {
         	return true;
         else
         	return false;
+	}
+
+	@Override
+	public List<Resident> getAllResidents() {
+		// TODO Auto-generated method stub
+		Session s=this.sessionFactory.getCurrentSession();
+        Query q=s.createQuery("from Resident");
+        return q.list();
+	}
+	@Override
+	public Resident fetchResidentByEmailId(String emailId) {
+		// TODO Auto-generated method stub
+		Session s=this.sessionFactory.getCurrentSession();
+        Query q=s.createQuery("from Resident l where l.emailId=:email");
+        q.setParameter("email", emailId);
+        Resident l1=(Resident)q.uniqueResult();
+        if(l1!=null)
+        	return l1;
+        else
+        	return null;
+	}
+	@Override
+	public void addResident(Resident resident) {
+		// TODO Auto-generated method stub
+		this.sessionFactory.getCurrentSession().save(resident);
+		System.out.println("Resident Added Successfully");
+	}
+
+	@Override
+	public void deleteResident(Integer id) {
+		// TODO Auto-generated method stub
+		Session s=this.sessionFactory.getCurrentSession();
+        Query q=s.createQuery("delete from Resident l where l.id=:id");
+        q.setParameter("id", id);
+        q.executeUpdate();
 	}
 
 }

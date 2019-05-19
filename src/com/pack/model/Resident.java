@@ -9,15 +9,17 @@ import javax.persistence.Table;
 public class Resident {
 	@Id
 	private Integer id;
-	private String OwnerName;
+	private String ownerName;
 	private String dob;
 	private String gender;
-	private Integer ContactNumber;
-	private String FlatNumber;
-	private String FloorNumber;
-	private String Block;
-	private Integer NoOfMembers;
-	private Float Area;
+	private Long contactNumber;
+	private String emailId;
+	private String flatNumber;
+	private String floorNumber;
+	private String block;
+	private Integer noOfMembers;
+	private String flatType;
+	private Float area;
 	public Resident() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -29,10 +31,10 @@ public class Resident {
 		this.id = id;
 	}
 	public String getOwnerName() {
-		return OwnerName;
+		return ownerName;
 	}
 	public void setOwnerName(String ownerName) {
-		OwnerName = ownerName;
+		this.ownerName = ownerName;
 	}
 	public String getDob() {
 		return dob;
@@ -46,41 +48,53 @@ public class Resident {
 	public void setGender(String gender) {
 		this.gender = gender;
 	}
-	public Integer getContactNumber() {
-		return ContactNumber;
+	public Long getContactNumber() {
+		return contactNumber;
 	}
-	public void setContactNumber(Integer contactNumber) {
-		ContactNumber = contactNumber;
+	public void setContactNumber(Long contactNumber) {
+		this.contactNumber = contactNumber;
+	}
+	public String getEmailId() {
+		return emailId;
+	}
+	public void setEmailId(String emailId) {
+		this.emailId = emailId;
 	}
 	public String getFlatNumber() {
-		return FlatNumber;
+		return flatNumber;
 	}
 	public void setFlatNumber(String flatNumber) {
-		FlatNumber = flatNumber;
+		this.flatNumber = flatNumber;
 	}
 	public String getFloorNumber() {
-		return FloorNumber;
+		return floorNumber;
 	}
 	public void setFloorNumber(String floorNumber) {
-		FloorNumber = floorNumber;
+		this.floorNumber = floorNumber;
 	}
 	public String getBlock() {
-		return Block;
+		return block;
 	}
 	public void setBlock(String block) {
-		Block = block;
+		this.block = block;
 	}
 	public Integer getNoOfMembers() {
-		return NoOfMembers;
+		return noOfMembers;
 	}
 	public void setNoOfMembers(Integer noOfMembers) {
-		NoOfMembers = noOfMembers;
+		this.noOfMembers = noOfMembers;
+	}
+	public String getFlatType() {
+		return flatType;
+	}
+	public void setFlatType(String flatType) {
+		this.flatType = flatType;
 	}
 	public Float getArea() {
-		return Area;
+		return area;
 	}
 	public void setArea(Float area) {
-		Area = area;
+		this.area = area;
 	}
 	
 

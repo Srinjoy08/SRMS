@@ -1,5 +1,8 @@
 package com.pack.controller;
 
+import java.util.List;
+import java.util.Random;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -8,10 +11,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.pack.model.Admin;
+import com.pack.model.Resident;
 import com.pack.service.AdminService;
 
 @Controller
@@ -23,11 +28,6 @@ public class SRMSController {
 	public String login()
 	{
 		return "login";
-	}
-	@RequestMapping(value="/adminHome", method=RequestMethod.GET)
-	public String adminHome()
-	{
-		return "adminHome";
 	}
 	@RequestMapping(value="/addNewRecord", method=RequestMethod.GET)
 	public String addNewRecord()
@@ -78,4 +78,42 @@ public class SRMSController {
 			return "adminLogin";
 		}
 		
+		@RequestMapping(value="/adminHome", method=RequestMethod.GET)
+		public String adminHome(ModelMap model)
+		{
+			List<Resident> l=adminService.getAllResidents();
+			model.addAttribute("residentList",l);
+			System.out.println(l.get(0).getFlatNumber());
+			return "adminHome";
+		}
+		@RequestMapping(value="/addNewResidentPage", method =RequestMethod.GET)
+		public String addNewResidentPage(ModelMap model)
+		{
+			model.addAttribute("resident",new Resident());
+			return "addNewRecord";
+		}
+		
+		@RequestMapping(value="/addNewResident", method =RequestMethod.POST)
+		public String addNewResident(@ModelAttribute(value="resident") Resident resident,BindingResult result,ModelMap model)
+		{
+			int check=0;
+			Random r = new Random();
+	 		int x = r.nextInt(900000)+100000;
+	 		resident.setId(x);
+	 		if(adminService.fetchResidentById(resident.getEmailId())==null) {
+	 			adminService.addResident(resident);
+	 			check=2;
+	 		}
+	 		else check=1;
+	 		model.addAttribute("check",check);
+	 		if(check==1)
+	 			return "addNewRecord";
+			return "redirect:/adminHome";
+		}
+		
+		@RequestMapping(value="removeResident/{id}",method=RequestMethod.GET)
+		public String removeResident(@PathVariable("id") Integer id) {
+			adminService.deleteResident(id);
+			return "redirect:/adminHome";
+		}
 }
