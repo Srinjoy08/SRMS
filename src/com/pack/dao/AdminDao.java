@@ -18,5 +18,7 @@ public interface AdminDao {
 	boolean checkEmail(Resident resident);
 	void generateBills(List<MaintainenceBill> l);
 	List<MaintainenceBill> getBills();
-	boolean payResidentBill(Integer id);
+	boolean payResidentBill(MaintainenceBill bill);
+	void mailMaintainenceBill(MaintainenceBill bill);
+	MaintainenceBill fetchBill(Integer id, String month, String year);
 }

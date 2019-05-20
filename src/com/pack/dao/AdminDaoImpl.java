@@ -2,6 +2,14 @@ package com.pack.dao;
 
 import java.util.Calendar;
 import java.util.List;
+import java.util.Properties;
+
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -121,7 +129,12 @@ public class AdminDaoImpl implements AdminDao {
 		// TODO Auto-generated method stub
 		Session s=this.sessionFactory.getCurrentSession();
 		for (MaintainenceBill maintainenceBill : l) {
-			s.saveOrUpdate(maintainenceBill);
+			Query q=s.createQuery("from MaintainenceBill where id=:id and month=:month and year=:year and billStatus='PAID')");
+			q.setParameter("id", maintainenceBill.getId());
+			q.setParameter("month", maintainenceBill.getMonth());
+			q.setParameter("year", maintainenceBill.getYear());
+			if(q.uniqueResult()==null)
+				s.saveOrUpdate(maintainenceBill);
 		}
 	}
 
@@ -134,7 +147,22 @@ public class AdminDaoImpl implements AdminDao {
 	}
 
 	@Override
-	public boolean payResidentBill(Integer id) {
+	public boolean payResidentBill(MaintainenceBill bill) {
+		// TODO Auto-generated method stub
+		Session s=this.sessionFactory.getCurrentSession();
+        Query q=s.createQuery("update MaintainenceBill l set billStatus='PAID' where l.id=:id and month=:month and year=:year");
+        q.setParameter("id", bill.getId());
+        q.setParameter("month", bill.getMonth());
+        q.setParameter("year", bill.getYear());
+        int i=q.executeUpdate();
+        if(i>0)
+        	return true;
+        else
+        	return false;
+	}
+
+	@Override
+	public void mailMaintainenceBill(MaintainenceBill bill) {
 		// TODO Auto-generated method stub
 		String[] monthName = {"January", "February",
                 "March", "April", "May", "June", "July",
@@ -143,15 +171,54 @@ public class AdminDaoImpl implements AdminDao {
         Calendar cal = Calendar.getInstance();
         String month = monthName[cal.get(Calendar.MONTH)];
         String year = String.valueOf(cal.get(Calendar.YEAR));
+		Properties props = new Properties();
+		props.put("mail.smtp.host", "smtp.gmail.com");
+		props.put("mail.smtp.socketFactory.port", "465");
+		props.put("mail.smtp.socketFactory.class",
+				"javax.net.ssl.SSLSocketFactory");
+		props.put("mail.smtp.auth", "true");
+		props.put("mail.smtp.port", "465"); 
+		javax.mail.Session session = javax.mail.Session.getDefaultInstance(props,
+				new javax.mail.Authenticator() {
+			protected PasswordAuthentication getPasswordAuthentication() {
+				return new PasswordAuthentication("testprojectmail101","test@1234");
+			}
+		}); 
+		try {
+
+			Message message = new MimeMessage(session);
+			message.setFrom(new InternetAddress("testprojectmail101gmail.com"));
+			message.setRecipients(Message.RecipientType.TO,
+					InternetAddress.parse(bill.getEmailId()));
+			message.setSubject("Password Reset");
+			/*message.setText("Dear User," +
+					"\n\n Your OTP for new Password Generation is :"+otp);*/
+			String msg;
+			if(bill.getBillStatus().equals("NOT_PAID") && bill.getMonth().equals(month) && bill.getYear().equals(year))
+				 msg = "<body><div class='header' style='width: 100%; height: 50px; background-color: #b3b3ff; border-radius: 15px 15px 0 0; font-size: 40px;'><center><b>SUNRISE SOCIETY</b></center></div><br><br><span><p style='padding-left: 100px; font-size: 20px;'>Dear "+bill.getOwnerName()+",<br>Your MaintainenceBill for "+bill.getMonth()+", "+bill.getYear()+" is Rs: <b>" + bill.getBillAmount() + "</b></p></span><br><br><div class='footer' style='width: 100%; height: 50px; background-color: #b3b3ff; border-radius: 0 0 15px 15px;'/></body>";
+			else
+				 msg = "<body><div class='header' style='width: 100%; height: 50px; background-color: #b3b3ff; border-radius: 15px 15px 0 0; font-size: 40px;'><center><b>SUNRISE SOCIETY</b></center></div><br><br><span><p style='padding-left: 100px; font-size: 20px;'>Dear "+bill.getOwnerName()+",<br>Your MaintainenceBill for "+bill.getMonth()+", "+bill.getYear()+" is unpaid. Please pay it as soon as possible. Bill Amount is Rs: <b>" + bill.getBillAmount() + "</b></p></span><br><br><div class='footer' style='width: 100%; height: 50px; background-color: #b3b3ff; border-radius: 0 0 15px 15px;'/></body>";
+			message.setContent(msg, "text/html");
+
+			Transport.send(message);
+
+			System.out.println("Done");
+
+		} catch (MessagingException e) {
+			throw new RuntimeException(e);
+		}
+
+		
+	}
+
+	@Override
+	public MaintainenceBill fetchBill(Integer id, String month, String year) {
+		// TODO Auto-generated method stub
 		Session s=this.sessionFactory.getCurrentSession();
-        Query q=s.createQuery("update MaintainenceBill l set billStatus='PAID' where l.id!=:id and month=:month and year=:year");
+        Query q=s.createQuery("from MaintainenceBill where id=:id and month=:month and year=:year");
         q.setParameter("id", id);
         q.setParameter("month", month);
         q.setParameter("year", year);
-        int i=q.executeUpdate();
-        if(i>0)
-        	return true;
-        else
-        	return false;
+        return (MaintainenceBill) q.uniqueResult();
 	}
 }

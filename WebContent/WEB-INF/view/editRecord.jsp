@@ -37,7 +37,18 @@
 	color: black;
 }
 </style>
-</head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+ <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script> 
+<script>
+$(function() {
+  $("#dob").datepicker({
+	  changeMonth:true,
+	  changeYear:true,
+	  maxDate:-1
+  });
+});
+</script>
 </head>
 <body>
 	<c:url var="logoutAction" value="/logout"></c:url>
@@ -120,15 +131,17 @@ body {
 								<br>
 							</div>
 						</div>
-						
+
 						<div class="col-md-4">
 							<div class="form-group">
-								Date of Birth : <br>
-								<form:input path="dob" type="text" name="ownersName"
-									class="date-picker" required="required" />
+								No of Members : <br>
+								<form:input path="noOfMembers" type="text" name="members"
+									required="required" pattern="[1-9]\d{0,1}"
+									title="Maximum 2 digits can be entered" />
 								<br>
 							</div>
 						</div>
+
 					</div>
 					<div class="row">
 
@@ -145,28 +158,41 @@ body {
 								</p>
 							</div>
 						</div>
-					</div>
-					<div class="row">
 
 						<div class="col-md-4">
 							<div class="form-group">
 								Contact No : <br>
 								<form:input path="contactNumber" type="text" name="contactNo"
-									required="required" pattern="\d{10}"
-									title="Only 10 digits can be entered " />
+									required="required" pattern="[1-9]\d{9}"
+									title="Only 10 digits can be entered and starting digit cannot be 0" />
 								<br>
 							</div>
 						</div>
+					</div>
+					<div class="row">
+
+
 						<div class="col-md-4">
 							<div class="form-group">
 								Email : <br>
 								<form:input path="emailId" type="text" name="email"
 									required="required" id="email"
-									pattern="[A-Za-z]{1,}@[a-z]{3,}\.[a-z]{2,}"
+									pattern="[A-Za-z0-9]{1,}@[a-z]{3,}\.[a-z]{2,}"
 									title="Email id must have atleast one character before @ and atleast 3 characters before . followed by atleast 2 characters" />
 								<br>
 							</div>
 						</div>
+
+						<div class="col-md-4">
+							<div class="form-group">
+								Area : <br>
+								<form:input path="area" type="text" name="area"
+									required="required" pattern="[1-9]\d{2,3}"
+									title="Area has to be number and 3 or 4 digits of length." />
+							</div>
+						</div>
+
+
 					</div>
 
 					<div class="row">
@@ -225,22 +251,14 @@ body {
 					</div>
 
 					<div class="row">
-						<div class="col-md-4">
-							<div class="form-group">
-								No of Members : <br>
-								<form:input path="noOfMembers" type="text" name="members"
-									required="required" pattern="\d{2}"
-									title="Only 2 digits can be entered" />
-								<br>
-							</div>
-						</div>
+
 
 						<div class="col-md-4">
 							<div class="form-group">
-								Area : <br>
-								<form:input path="area" type="text" name="area"
-									required="required" pattern="\d{3}"
-									title="Area has to be number and 3 digits." />
+								Date of Birth : <br>
+								<form:input path="dob" type="text" id="dob"
+									  readonly="true" required="required" placeholder="dd/mm/yyyy"/>
+								<br>
 							</div>
 						</div>
 					</div>

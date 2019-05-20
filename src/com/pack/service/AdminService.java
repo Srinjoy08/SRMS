@@ -29,5 +29,9 @@ public interface AdminService {
 
 	List<MaintainenceBill> getBills();
 
-	boolean payResidentBill(Integer id);
+	boolean payResidentBill(MaintainenceBill bill);
+
+	void mailMaintainenceBill(MaintainenceBill bill);
+
+	MaintainenceBill fetchBill(Integer id, String month, String year);
 }

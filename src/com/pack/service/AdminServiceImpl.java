@@ -87,8 +87,21 @@ public class AdminServiceImpl implements AdminService {
 	}
 	@Override
 	@Transactional
-	public boolean payResidentBill(Integer id) {
+	public boolean payResidentBill(MaintainenceBill bill) {
 		// TODO Auto-generated method stub
-		return adminDao.payResidentBill(id);
+		return adminDao.payResidentBill(bill);
+	}
+	@Override
+	
+	public void mailMaintainenceBill(MaintainenceBill bill) {
+		// TODO Auto-generated method stub
+		adminDao.mailMaintainenceBill(bill);
+		
+	}
+	@Override
+	@Transactional
+	public MaintainenceBill fetchBill(Integer id, String month, String year) {
+		// TODO Auto-generated method stub
+		return adminDao.fetchBill(id,month,year);
 	}
 }

@@ -153,28 +153,19 @@ public class SRMSController {
 			return "redirect:/billListPage";
 		}
 		
-		@RequestMapping(value="/payBill/{id}", method =RequestMethod.GET)
-		public String payBill(@PathVariable("id")Integer id,ModelMap model)
+		@RequestMapping(value="/payBill/{id}/{month}/{year}", method =RequestMethod.GET)
+		public String payBill(@PathVariable("id")Integer id,@PathVariable("month")String month,@PathVariable("year")String year,ModelMap model)
 		{
-			int check=0;
-			if(adminService.payResidentBill(id))
-			{
-				check=2;
-			}
-			else check=1;
-			model.addAttribute("check",check);
+			MaintainenceBill bill=adminService.fetchBill(id,month,year);
+			if(adminService.payResidentBill(bill))
+				return "redirect:/billListPage";
 			return "redirect:/billListPage";
 		}
-		@RequestMapping(value="/mailBill/{id}", method =RequestMethod.GET)
-		public String mailBill(@PathVariable("id")Integer id,ModelMap model)
+		@RequestMapping(value="/mailBill/{id}/{month}/{year}", method =RequestMethod.GET)
+		public String mailBill(@PathVariable("id")Integer id,@PathVariable("month")String month,@PathVariable("year")String year,ModelMap model)
 		{
-			int check=0;
-			if(adminService.payResidentBill(id))
-			{
-				check=2;
-			}
-			else check=1;
-			model.addAttribute("check",check);
-			return "maintainenceBillList";
+			MaintainenceBill bill=adminService.fetchBill(id,month,year);
+			adminService.mailMaintainenceBill(bill);
+			return "redirect:/billListPage";
 		}
 }

@@ -122,12 +122,21 @@ body {
 							<td>${bill.year}</td>
 							<td>${bill.billAmount}</td>
 							<td>${bill.billStatus}</td>
-							<td colspan="2"><button class="btn-sm" style="color: black">
-									<a href="/SRMS/payBill/${bill.id}" style="font-color:red;"><b>Mark As Paid</b></a>
-								</button>&nbsp;&nbsp;
-								<button class="btn-sm" style="color: black"">
-									<a href="/SRMS/mailBill/${bill.id}"><b>Mail Bill</b></a>
-								</button>
+							<td colspan="2">
+							<c:choose>
+								<c:when test="${bill.billStatus == 'PAID'}">
+									N/A
+								</c:when>
+							
+								<c:otherwise>
+									<button class="btn-sm" style="color: black">
+										<a href="/SRMS/payBill/${bill.id}/${bill.month}/${bill.year}" style="font-color:red;"><b>Mark As Paid</b></a>
+									</button>&nbsp;&nbsp;
+									<button class="btn-sm" style="color: black"">
+										<a href="/SRMS/mailBill/${bill.id}/${bill.month}/${bill.year}"><b>Mail Bill</b></a>
+									</button>
+								</c:otherwise>
+							</c:choose>	
 						</tr>
 					</c:forEach>
 				</tbody>

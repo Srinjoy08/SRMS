@@ -95,8 +95,15 @@ body {
 			<div class="col-md-2">
 
 				<form action="/SRMS/billListPage" id="btnform2">
-					<button type="submit" id="addpro" class="btn" style="height: 50px;">Generate
-						Bill</button>
+					<button type="submit" style="margin-top: 10px;
+                        margin-left: 20px;
+                     margin-bottom: 50px;
+                        border-radius: 2.5rem;
+                        background-color: #7e7e7e;
+                        width: 100%;
+                        color: white;
+                        font-size: 20px;" class="btn" style="height: 50px;"><span>View Bills</span></button>
+
 				</form>
 			</div>
 
