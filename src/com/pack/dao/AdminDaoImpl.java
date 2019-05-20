@@ -82,4 +82,35 @@ public class AdminDaoImpl implements AdminDao {
         q.executeUpdate();
 	}
 
+	@Override
+	public Resident fetchResidentById(Integer id) {
+		// TODO Auto-generated method stub
+		Session s=this.sessionFactory.getCurrentSession();
+        Query q=s.createQuery("from Resident l where l.id=:id");
+        q.setParameter("id", id);
+        Resident l1=(Resident)q.uniqueResult();
+        if(l1!=null)
+        	return l1;
+        else
+        	return null;
+	}
+
+	@Override
+	public void updateResident(Resident resident) {
+		// TODO Auto-generated method stub
+		this.sessionFactory.getCurrentSession().update(resident);
+	}
+	@Override
+	public boolean checkEmail(Resident resident)
+	{
+		Session s=this.sessionFactory.getCurrentSession();
+        Query q=s.createQuery("from Resident l where l.id!=:id and emailid=:email");
+        q.setParameter("id", resident.getId());
+        q.setParameter("email", resident.getEmailId());
+        Resident l1=(Resident)q.uniqueResult();
+        if(l1!=null)
+        	return false;
+        else
+        	return true;
+	}
 }

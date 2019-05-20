@@ -8,6 +8,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -100,7 +101,7 @@ public class SRMSController {
 			Random r = new Random();
 	 		int x = r.nextInt(900000)+100000;
 	 		resident.setId(x);
-	 		if(adminService.fetchResidentById(resident.getEmailId())==null) {
+	 		if(adminService.fetchResidentByEmailId(resident.getEmailId())==null) {
 	 			adminService.addResident(resident);
 	 			check=2;
 	 		}
@@ -114,6 +115,27 @@ public class SRMSController {
 		@RequestMapping(value="removeResident/{id}",method=RequestMethod.GET)
 		public String removeResident(@PathVariable("id") Integer id) {
 			adminService.deleteResident(id);
+			return "redirect:/adminHome";
+		}
+		@RequestMapping(value="editResidentPage/{id}",method=RequestMethod.GET)
+		public String editResidentPage(@PathVariable("id") Integer id,ModelMap model) {
+			model.addAttribute("resident",adminService.fetchResidentById(id));
+			return "editRecord";
+		}
+		
+		@RequestMapping(value="/editResident/{id}", method =RequestMethod.POST)
+		public String editResident(@PathVariable("id")Integer id,@ModelAttribute(value="resident") Resident resident,BindingResult result,ModelMap model)
+		{
+			int check=0;
+			resident.setId(id);
+	 		if(adminService.checkEmail(resident)) {
+	 			adminService.updateResident(resident);
+	 			check=2;
+	 		}
+	 		else check=1;
+	 		model.addAttribute("check",check);
+	 		if(check==1)
+	 			return "editRecord";
 			return "redirect:/adminHome";
 		}
 }

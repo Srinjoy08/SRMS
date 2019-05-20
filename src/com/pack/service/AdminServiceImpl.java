@@ -45,7 +45,7 @@ public class AdminServiceImpl implements AdminService {
 	}
 	@Override
 	@Transactional
-	public Resident fetchResidentById(String emailId) {
+	public Resident fetchResidentByEmailId(String emailId) {
 		// TODO Auto-generated method stub
 		return adminDao.fetchResidentByEmailId(emailId);
 	}
@@ -55,5 +55,21 @@ public class AdminServiceImpl implements AdminService {
 		// TODO Auto-generated method stub
 		 adminDao.deleteResident(id);
 	}
-
+	@Override
+	@Transactional
+	public Resident fetchResidentById(Integer id) {
+		// TODO Auto-generated method stub
+		return adminDao.fetchResidentById(id);
+	}
+	@Override
+	@Transactional
+	public void updateResident(Resident resident) {
+		// TODO Auto-generated method stub
+		adminDao.updateResident(resident);		
+	}
+	@Override
+	@Transactional
+	public boolean checkEmail(Resident resident) {
+		return adminDao.checkEmail(resident);
+	}
 }

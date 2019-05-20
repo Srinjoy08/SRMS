@@ -14,7 +14,13 @@ public interface AdminService {
 
 	void addResident(Resident resident);
 
-	Resident fetchResidentById(String emailId);
+	Resident fetchResidentByEmailId(String emailId);
 
 	void deleteResident(Integer id);
+	
+	Resident fetchResidentById(Integer id);
+
+	void updateResident(Resident resident);
+
+	boolean checkEmail(Resident resident);
 }

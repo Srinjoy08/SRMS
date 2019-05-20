@@ -103,6 +103,7 @@ body {
 									<br>
 								</div>
 							</div>
+							
 							<div class="col-md-4">
 								<div class="form-group">
 									Date of Birth : <br>

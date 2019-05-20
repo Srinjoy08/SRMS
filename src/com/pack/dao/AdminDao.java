@@ -12,4 +12,7 @@ public interface AdminDao {
 	Resident fetchResidentByEmailId(String emailId);
 	void addResident(Resident resident);
 	void deleteResident(Integer id);
+	Resident fetchResidentById(Integer id);
+	void updateResident(Resident resident);
+	boolean checkEmail(Resident resident);
 }

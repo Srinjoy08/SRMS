@@ -98,7 +98,7 @@ body {
 							<td>${resident.flatType}</td>
 							<td>${resident.area}</td>
 							<td colspan="2"><button class="btn btn-warning btn-sm">
-									<a href="/SRMS/editResident/${resident.id}">Edit</a>
+									<a href="/SRMS/editResidentPage/${resident.id}">Edit</a>
 								</button>&nbsp;&nbsp;
 								<button class="btn btn-danger btn-sm">
 									<a href="/SRMS/removeResident/${resident.id}">Remove</a>
