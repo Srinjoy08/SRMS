@@ -7,5 +7,6 @@
     <session-factory>
 		<mapping class="com.pack.model.Admin" />
 		<mapping class="com.pack.model.Resident" />
+		<mapping class="com.pack.model.MaintainenceBill" />
     </session-factory>
 </hibernate-configuration>

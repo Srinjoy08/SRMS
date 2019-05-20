@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.pack.dao.AdminDao;
 import com.pack.model.Admin;
+import com.pack.model.MaintainenceBill;
 import com.pack.model.Resident;
 @Service
 public class AdminServiceImpl implements AdminService {
@@ -71,5 +72,23 @@ public class AdminServiceImpl implements AdminService {
 	@Transactional
 	public boolean checkEmail(Resident resident) {
 		return adminDao.checkEmail(resident);
+	}
+	@Override
+	@Transactional
+	public void generateBills(List<MaintainenceBill> l) {
+		// TODO Auto-generated method stub
+		 adminDao.generateBills(l);
+	}
+	@Override
+	@Transactional
+	public List<MaintainenceBill> getBills() {
+		// TODO Auto-generated method stub
+		return adminDao.getBills();
+	}
+	@Override
+	@Transactional
+	public boolean payResidentBill(Integer id) {
+		// TODO Auto-generated method stub
+		return adminDao.payResidentBill(id);
 	}
 }

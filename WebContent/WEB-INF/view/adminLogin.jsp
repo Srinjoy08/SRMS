@@ -78,11 +78,11 @@ body {
 
 							<div class="form-group">
 								<form:input path="emailId" type="email" name="emailId"
-									required="required" autocomplete="off" placeholder="Email" />
+									required="required" autocomplete="off" placeholder="Email" pattern="[A-Za-z0-9]{1,}@[A-Za-z]{3,}\.[A-Za-z]{2,}" title="Email id must have atleast one character before @ and atleast 3 characters before . followed by atleast 2 characters"/>
 							</div>
 							<div class="form-group">
 								<form:input type="password" path="password" required="required"
-									autocomplete="off" placeholder="password" id="myInput" />
+									autocomplete="off" placeholder="password" id="myInput" pattern="[A-z]{1,}[a-z]{1,}0-9.*!,?/]{8,}" title="Password should be atleast 8 characters of length" />
 								</br> <input type="checkbox" onclick="myFunction()" name="checkbox" />Show
 								Password
 

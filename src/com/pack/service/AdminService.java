@@ -3,6 +3,7 @@ package com.pack.service;
 import java.util.List;
 
 import com.pack.model.Admin;
+import com.pack.model.MaintainenceBill;
 import com.pack.model.Resident;
 
 public interface AdminService {
@@ -23,4 +24,10 @@ public interface AdminService {
 	void updateResident(Resident resident);
 
 	boolean checkEmail(Resident resident);
+
+	void generateBills(List<MaintainenceBill> l);
+
+	List<MaintainenceBill> getBills();
+
+	boolean payResidentBill(Integer id);
 }

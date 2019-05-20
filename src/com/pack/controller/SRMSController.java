@@ -1,14 +1,16 @@
 package com.pack.controller;
 
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.pack.model.Admin;
+import com.pack.model.MaintainenceBill;
 import com.pack.model.Resident;
 import com.pack.service.AdminService;
 
@@ -24,22 +27,6 @@ import com.pack.service.AdminService;
 public class SRMSController {
 	@Autowired
 	private AdminService adminService;
-
-	@RequestMapping(value="/login", method=RequestMethod.GET)
-	public String login()
-	{
-		return "login";
-	}
-	@RequestMapping(value="/addNewRecord", method=RequestMethod.GET)
-	public String addNewRecord()
-	{
-		return "addNewRecord";
-	}
-	@RequestMapping(value="/editRecord", method=RequestMethod.GET)
-	public String editRecord()
-	{
-		return "editRecord";
-	}
 	
 	//Admin Login Page
     @RequestMapping(value = "/loginAdminPage", method = RequestMethod.GET)
@@ -84,7 +71,6 @@ public class SRMSController {
 		{
 			List<Resident> l=adminService.getAllResidents();
 			model.addAttribute("residentList",l);
-			System.out.println(l.get(0).getFlatNumber());
 			return "adminHome";
 		}
 		@RequestMapping(value="/addNewResidentPage", method =RequestMethod.GET)
@@ -137,5 +123,58 @@ public class SRMSController {
 	 		if(check==1)
 	 			return "editRecord";
 			return "redirect:/adminHome";
+		}
+		
+		@RequestMapping(value="/billListPage", method=RequestMethod.GET)
+		public String billListPage(ModelMap model)
+		{
+			List<MaintainenceBill> l=adminService.getBills();
+			model.addAttribute("billList",l);
+			return "maintainenceBillList";
+		}
+		@RequestMapping(value="/generateBill", method=RequestMethod.GET)
+		public String generateBill()
+		{
+			String[] monthName = {"January", "February",
+	                "March", "April", "May", "June", "July",
+	                "August", "September", "October", "November",
+	                "December"};
+	        Calendar cal = Calendar.getInstance();
+	        String month = monthName[cal.get(Calendar.MONTH)];
+	        String year = String.valueOf(cal.get(Calendar.YEAR));
+			List<Resident> l=adminService.getAllResidents();
+			List<MaintainenceBill> l2 = new ArrayList<MaintainenceBill>();
+			MaintainenceBill m;
+			for (Resident resident : l) {
+				m=new MaintainenceBill(resident.getId(),resident.getOwnerName(),resident.getContactNumber(),resident.getEmailId(),resident.getFlatNumber(),resident.getBlock(),resident.getFloorNumber(),resident.getFlatType(),resident.getArea(),month,year,resident.getArea()*2,"NOT_PAID");
+				l2.add(m);
+			}
+			adminService.generateBills(l2);
+			return "redirect:/billListPage";
+		}
+		
+		@RequestMapping(value="/payBill/{id}", method =RequestMethod.GET)
+		public String payBill(@PathVariable("id")Integer id,ModelMap model)
+		{
+			int check=0;
+			if(adminService.payResidentBill(id))
+			{
+				check=2;
+			}
+			else check=1;
+			model.addAttribute("check",check);
+			return "redirect:/billListPage";
+		}
+		@RequestMapping(value="/mailBill/{id}", method =RequestMethod.GET)
+		public String mailBill(@PathVariable("id")Integer id,ModelMap model)
+		{
+			int check=0;
+			if(adminService.payResidentBill(id))
+			{
+				check=2;
+			}
+			else check=1;
+			model.addAttribute("check",check);
+			return "maintainenceBillList";
 		}
 }

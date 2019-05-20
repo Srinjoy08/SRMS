@@ -1,5 +1,6 @@
 package com.pack.dao;
 
+import java.util.Calendar;
 import java.util.List;
 
 import org.hibernate.Query;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.pack.model.Admin;
+import com.pack.model.MaintainenceBill;
 import com.pack.model.Resident;
 @Repository
 public class AdminDaoImpl implements AdminDao {
@@ -112,5 +114,44 @@ public class AdminDaoImpl implements AdminDao {
         	return false;
         else
         	return true;
+	}
+
+	@Override
+	public void generateBills(List<MaintainenceBill> l) {
+		// TODO Auto-generated method stub
+		Session s=this.sessionFactory.getCurrentSession();
+		for (MaintainenceBill maintainenceBill : l) {
+			s.saveOrUpdate(maintainenceBill);
+		}
+	}
+
+	@Override
+	public List<MaintainenceBill> getBills() {
+		// TODO Auto-generated method stub
+		Session s=this.sessionFactory.getCurrentSession();
+        Query q=s.createQuery("from MaintainenceBill");
+        return q.list();
+	}
+
+	@Override
+	public boolean payResidentBill(Integer id) {
+		// TODO Auto-generated method stub
+		String[] monthName = {"January", "February",
+                "March", "April", "May", "June", "July",
+                "August", "September", "October", "November",
+                "December"};
+        Calendar cal = Calendar.getInstance();
+        String month = monthName[cal.get(Calendar.MONTH)];
+        String year = String.valueOf(cal.get(Calendar.YEAR));
+		Session s=this.sessionFactory.getCurrentSession();
+        Query q=s.createQuery("update MaintainenceBill l set billStatus='PAID' where l.id!=:id and month=:month and year=:year");
+        q.setParameter("id", id);
+        q.setParameter("month", month);
+        q.setParameter("year", year);
+        int i=q.executeUpdate();
+        if(i>0)
+        	return true;
+        else
+        	return false;
 	}
 }
