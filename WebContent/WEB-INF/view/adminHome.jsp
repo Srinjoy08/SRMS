@@ -6,6 +6,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<title>Admin Homepage</title>
 <meta charset="ISO-8859-1">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <spring:url value="/res/styles/" var="css" />
@@ -24,14 +25,13 @@ body {
 </style>
 </head>
 <body>
-	<c:url var="logoutAction" value="/logout"></c:url>
-	<style>
-body {
-	background-image: url("${img}background.jpg");
-	background-repeat: no-repeat;
-	background-size: 100%;
-}
-</style>
+	<%
+	response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+	response.setIntHeader("Refresh", (10*60));
+	%>
+	<c:if test="${user eq null }">
+		<%response.sendRedirect("/SRMS/loginAdminPage"); %>
+	</c:if>
 	<div class="container-fluid">
 		<div class="container-fluid">
 			<nav class="navbar navbar-expand-lg navbar-dark"
@@ -48,7 +48,7 @@ body {
 					</ul>
 					<ul class="navbar-nav mr-auto" style="text-align: center;">
 						<h4>
-							<b>Welcome Arya</b>
+							<b>Welcome ${user.firstName} ${user.lastName}</b>
 						</h4>
 					</ul>
 					<ul class="navbar-nav">
@@ -133,7 +133,7 @@ body {
 							<th scope="col">Block</th>
 							<th scope="col">Floor</th>
 							<th scope="col">Flat Type</th>
-							<th scope="col">Area</th>
+							<th scope="col">Area <br/>(sq.ft.)</th>
 							<th scope="col">Actions</th>
 						</tr>
 					</thead>

@@ -16,7 +16,7 @@ public class MaintainenceBill {
 	private String block;
 	private String floorNumber;
 	private String flatType;
-	private Float area;
+	private Integer area;
 	private String month;
 	private String year;
 	private Float billAmount;
@@ -27,7 +27,7 @@ public class MaintainenceBill {
 	}
 	
 	public MaintainenceBill(Integer id, String ownerName, Long contactNumber, String emailId, String flatNumber,
-			String block, String floorNumber, String flatType, Float area, String month, String year, Float billAmount,
+			String block, String floorNumber, String flatType, Integer area, String month, String year, Float billAmount,
 			String billStatus) {
 		super();
 		this.id = id;
@@ -93,10 +93,10 @@ public class MaintainenceBill {
 	public void setFlatType(String flatType) {
 		this.flatType = flatType;
 	}
-	public Float getArea() {
+	public Integer getArea() {
 		return area;
 	}
-	public void setArea(Float area) {
+	public void setArea(Integer area) {
 		this.area = area;
 	}
 	public String getMonth() {

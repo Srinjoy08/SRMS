@@ -6,6 +6,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<title>Maintainance Bills List</title>
 <meta charset="ISO-8859-1">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <spring:url value="/res/styles/" var="css" />
@@ -16,6 +17,16 @@
 <link rel="stylesheet" type="text/css" href="${css}style1.css">
 <!-- END Spring Csss and Images -->
 <style>
+#myInput {
+	background-image: url('/css/searchicon.png');
+	background-position: 10px 10px;
+	background-repeat: no-repeat;
+	width: 100%;
+	font-size: 16px;
+	padding: 12px 20px 12px 40px;
+	border: 1px solid #ddd;
+	margin-bottom: 12px;
+}
 body {
 	background-image: url("${img}background.jpg");
 	background-repeat: no-repeat;
@@ -24,7 +35,6 @@ body {
 </style>
 </head>
 <body>
-	<c:url var="logoutAction" value="/logout"></c:url>
 	<style>
 body {
 	background-image: url("${img}background.jpg");
@@ -32,6 +42,13 @@ body {
 	background-size: 100%;
 }
 </style>
+<%
+	response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+	response.setIntHeader("Refresh", (10*60));
+	%>
+	<c:if test="${user eq null }">
+		<%response.sendRedirect("/SRMS/loginAdminPage"); %>
+	</c:if>
 	<div class="container-fluid">
 		<div class="container-fluid">
 			<nav class="navbar navbar-expand-lg navbar-dark"
@@ -48,7 +65,7 @@ body {
 					</ul>
 					<ul class="navbar-nav mr-auto" style="text-align: center;">
 						<h4>
-							<b>Welcome Arya</b>
+							<b>Welcome ${user.firstName} ${user.lastName}</b>
 						</h4>
 					</ul>
 					<ul class="navbar-nav">
@@ -72,13 +89,22 @@ body {
 }
 </style>
 	<div class="row">
-		<div class="col-sm-5"></div>
-		<div class="col-sm-3"></div>
-		<div class="col-sm-2">
+
+			<div class="col-md-1"></div>
+			<div class="col-md-3">
+
+				<input type="text" id="myInput" onkeyup="myFunction()"
+					placeholder="Search for names.." title="Type in a name">
+			</div>
+			<div class="col-md-3"></div>
+
+
+		<div class="col-md-1"></div>
+		<div class="col-md-2">
 			<form action="/SRMS/generateBill"
 				id="btnform2">
 				<button type="submit" id="addpro" class="btn" style="height: 70px;">
-					<span>Generate Bill for this Month</span>
+					<span>Generate Bills for this Month</span>
 				</button>
 				
 			</form>
@@ -99,7 +125,7 @@ body {
 						<th scope="col">Block</th>
 						<th scope="col">Floor</th>
 						<th scope="col">Flat Type</th>
-						<th scope="col">Area</th>
+						<th scope="col">Area <br/>(sq.ft.)</th>
 						<th scope="col">Billing Month</th>
 						<th scope="col">Billing Year</th>
 						<th scope="col">Bill Amount</th>
@@ -144,5 +170,30 @@ body {
 		</div>
 	</div>
 	</div>
+	
+		<script>
+		function myFunction() {
+			// Declare variables 
+			var input, filter, table, tr, td, i, txtValue;
+			input = document.getElementById("myInput");
+			filter = input.value.toUpperCase();
+			table = document.getElementById("myTable");
+			tr = table.getElementsByTagName("tr");
+
+			// Loop through all table rows, and hide those who don't match the search query
+			for (i = 0; i < tr.length; i++) {
+				td = tr[i].getElementsByTagName("td")[1];
+				if (td) {
+					txtValue = td.textContent || td.innerText;
+					if (txtValue.toUpperCase().indexOf(filter) > -1) {
+						tr[i].style.display = "";
+					} else {
+						tr[i].style.display = "none";
+					}
+				}
+			}
+		}
+		
+	</script>
 </body>
 </html>

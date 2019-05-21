@@ -12,6 +12,8 @@ public interface AdminService {
 	boolean checkPassword(Admin admin);
 
 	List<Resident> getAllResidents();
+	
+	boolean checkFlat(Resident resident);
 
 	void addResident(Resident resident);
 
@@ -34,4 +36,5 @@ public interface AdminService {
 	void mailMaintainenceBill(MaintainenceBill bill);
 
 	MaintainenceBill fetchBill(Integer id, String month, String year);
+	
 }

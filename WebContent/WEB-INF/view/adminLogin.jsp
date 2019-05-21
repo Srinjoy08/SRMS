@@ -7,6 +7,7 @@
 <html lang="en">
 
 <head>
+<title>Login</title>
 <meta charset="UTF-8">
 <spring:url value="/res/styles/" var="css" />
 <spring:url value="/res/scripts/" var="js" />
@@ -37,20 +38,35 @@
 	color: black;
 }
 </style>
-
+<script type="text/javascript" >
+   function preventBack(){window.history.forward();}
+    setTimeout("preventBack()", 0);
+    window.onunload=function(){null};
+</script>
 
 <!-- End  Css -->
-<style>
+<script>
+      $(document).ready(function() {
+         function disablePrev() { window.history.forward() }
+         window.onload = disablePrev();
+         window.onpageshow = function(evt) { if (evt.persisted) disableBack() }
+      });
+   </script>
+	<style>
 body {
-	background-image: url("${img}society-management-software.jpg");
+	background-image: url("${img}apartment.jpg");
 	background-repeat: no-repeat;
 	background-size: 100%;
 }
 </style>
-
 </head>
 <body>
-
+	<%
+	response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+	%>
+	<c:if test="${user != null }">
+		<%response.sendRedirect("/SRMS/adminHome"); %>
+	</c:if>
 	<div class="verticle-center">
 		<div class="container">
 			<div class="row">
@@ -71,7 +87,7 @@ body {
 							</div>
 						</c:if>
 						<h2 class="display-3">Login</h2>
-						<p class="pg">Welcome to Sunkiss Society, please provide your
+						<p class="pg">Welcome to Sunrise Society, please provide your
 							login credentials.</p>
 						<form:form action="/SRMS/loginAdmin" method="post"
 							commandName="admin">

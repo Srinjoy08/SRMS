@@ -13,6 +13,27 @@ public class Admin {
 	private String lastName;
 	private String emailId;
 	private String password;
+	private String gender;
+	private String dob;
+	private Long contactNumber;
+	public String getGender() {
+		return gender;
+	}
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+	public String getDob() {
+		return dob;
+	}
+	public void setDob(String dob) {
+		this.dob = dob;
+	}
+	public Long getContactNumber() {
+		return contactNumber;
+	}
+	public void setContactNumber(Long contactNumber) {
+		this.contactNumber = contactNumber;
+	}
 	public Admin() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -39,7 +60,7 @@ public class Admin {
 		return emailId;
 	}
 	public void setEmailId(String emailId) {
-		this.emailId = emailId;
+		this.emailId = emailId.toLowerCase();
 	}
 	public String getPassword() {
 		return password;

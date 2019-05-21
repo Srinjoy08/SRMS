@@ -6,6 +6,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<title>Add New Resident Information</title>
 <meta charset="ISO-8859-1">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <spring:url value="/res/styles/" var="css" />
@@ -20,6 +21,7 @@
 	padding: 20px;
 	background-color: #f44336;
 	color: white;
+	width:50%;
 }
 
 .closebtn {
@@ -51,7 +53,6 @@ $(function() {
 });
 </script>
 <body>
-	<c:url var="logoutAction" value="/logout"></c:url>
 	<style>
 body {
 	background-image: url("${img}background.jpg");
@@ -59,6 +60,13 @@ body {
 	background-size: 100%;
 }
 </style>
+	<%
+	response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+	response.setIntHeader("Refresh", (10*60));
+	%>
+	<c:if test="${user eq null }">
+		<%response.sendRedirect("/SRMS/loginAdminPage"); %>
+	</c:if>
 	<div class="container-fluid">
 		<div class="container-fluid">
 			<nav class="navbar navbar-expand-lg navbar-dark"
@@ -75,7 +83,7 @@ body {
 					</ul>
 					<ul class="navbar-nav mr-auto" style="text-align: center;">
 						<h4>
-							<b>Welcome Arya</b>
+							<b>Welcome ${user.firstName} ${user.lastName}</b>
 						</h4>
 					</ul>
 					<ul class="navbar-nav">
@@ -92,19 +100,13 @@ body {
 			</nav>
 		</div>
 		<br>
-		<style>
-body {
-	background-repeat: no-repeat;
-	background-size: 100%;
-}
-</style>
 		<div class="row">
 			<div class="col-md-4"></div>
 			<div class="col-md-8">
 				<div class="row">
 					<h1 id="containers"
 						style="color: cornflowerblue; font-family: Georgia, 'Times New Roman', Times, serif">
-						<u>New User Addition Form</u>
+						<u>New Resident Addition Form</u>
 					</h1>
 				</div>
 				<br>
@@ -113,7 +115,7 @@ body {
 					<div class="alert">
 						<span class="closebtn"
 							onclick="this.parentElement.style.display='none';">&times;</span>
-						<strong>Email Id Already Exists!</strong>
+						<strong>Apartment Already Registered!</strong>
 					</div>
 					<br />
 				</c:if>
@@ -126,7 +128,7 @@ body {
 							<div class="form-group">
 								Owner's Name : <br>
 								<form:input path="ownerName" type="text" name="ownerName"
-									required="required" pattern="[A-Z]{1}[a-z]{3,}"
+									required="required" pattern="[A-Z]{1}[A-Za-z\s]{3,}"
 									title="Atleast 4 characters can be entered and the first character has to be Capital" />
 								<br>
 							</div>
@@ -143,8 +145,7 @@ body {
 						</div>
 
 					</div>
-					<div class="row">
-
+										<div class="row">
 						<div class="col-md-4">
 							<div class="form-group">
 								Gender : <br>
@@ -158,13 +159,22 @@ body {
 								</p>
 							</div>
 						</div>
-
+					</div>
+					<div class="row">
+						<div class="col-md-4">
+							<div class="form-group">
+								Date of Birth : <br>
+								<form:input path="dob" type="text" id="dob"
+									  readonly="true" required="required" placeholder="dd/mm/yyyy"/>
+								<br>
+							</div>
+						</div>
 						<div class="col-md-4">
 							<div class="form-group">
 								Contact No : <br>
 								<form:input path="contactNumber" type="text" name="contactNo"
 									required="required" pattern="[1-9]\d{9}"
-									title="Only 10 digits can be entered " />
+									title="Only 10 digits can be entered and starting digit cannot be 0" />
 								<br>
 							</div>
 						</div>
@@ -237,7 +247,7 @@ body {
 						</div>
 						<div class="col-md-4">
 							<div class="form-group">
-								<label for="flatType" required="required">Select Flat
+								<label for="flatType">Select Flat
 									Type:</label>
 								<form:select path="flatType" class="form-control" id="flatType"
 									required="required">
@@ -246,19 +256,6 @@ body {
 									<form:option value="3BHK">3BHK</form:option>
 									<form:option value="4BHK">4BHK</form:option>
 								</form:select>
-							</div>
-						</div>
-					</div>
-
-					<div class="row">
-
-
-						<div class="col-md-4">
-							<div class="form-group">
-								Date of Birth : <br>
-								<form:input path="dob" type="text" id="dob"
-									readonly="true" required="required" placeholder="dd/mm/yyyy"/>
-								<br>
 							</div>
 						</div>
 					</div>

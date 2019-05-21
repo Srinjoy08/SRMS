@@ -19,7 +19,7 @@ public class Resident {
 	private String block;
 	private Integer noOfMembers;
 	private String flatType;
-	private Float area;
+	private Integer area;
 	public Resident() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -90,10 +90,10 @@ public class Resident {
 	public void setFlatType(String flatType) {
 		this.flatType = flatType;
 	}
-	public Float getArea() {
+	public Integer getArea() {
 		return area;
 	}
-	public void setArea(Float area) {
+	public void setArea(Integer area) {
 		this.area = area;
 	}
 	

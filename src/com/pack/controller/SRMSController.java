@@ -8,7 +8,7 @@ import java.util.Random;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.hibernate.Session;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -41,9 +41,8 @@ public class SRMSController {
 	
 	//Admin Login
 		@RequestMapping(value="/loginAdmin", method=RequestMethod.POST)
-		public String loginAdmin(@ModelAttribute(value="admin") Admin admin,BindingResult result,ModelMap model, HttpServletRequest req){
+		public String loginAdmin(@ModelAttribute(value="admin") Admin admin,BindingResult result,ModelMap model, HttpSession session){
 			System.out.println(admin.getEmailId()+admin.getPassword());
-			HttpSession session = req.getSession();
 			System.out.println("Session is new? - > " + session.isNew());
 			Admin u=adminService.fetchAdminByEmailId(admin.getEmailId());	
 			System.out.println(u);
@@ -59,7 +58,6 @@ public class SRMSController {
 			}
 			model.addAttribute("check", check);
 			if(check==2) {
-				session.setMaxInactiveInterval(10*60);
 				session.setAttribute("user", u);
 				return "redirect:/adminHome";
 			}
@@ -87,7 +85,7 @@ public class SRMSController {
 			Random r = new Random();
 	 		int x = r.nextInt(900000)+100000;
 	 		resident.setId(x);
-	 		if(adminService.fetchResidentByEmailId(resident.getEmailId())==null) {
+	 		if(adminService.checkFlat(resident)) {
 	 			adminService.addResident(resident);
 	 			check=2;
 	 		}
@@ -114,7 +112,9 @@ public class SRMSController {
 		{
 			int check=0;
 			resident.setId(id);
-	 		if(adminService.checkEmail(resident)) {
+			//System.out.println(adminService.checkFlat(resident));
+	 		if(adminService.checkFlat(resident)) {
+	 			System.out.println("here");
 	 			adminService.updateResident(resident);
 	 			check=2;
 	 		}
@@ -146,7 +146,7 @@ public class SRMSController {
 			List<MaintainenceBill> l2 = new ArrayList<MaintainenceBill>();
 			MaintainenceBill m;
 			for (Resident resident : l) {
-				m=new MaintainenceBill(resident.getId(),resident.getOwnerName(),resident.getContactNumber(),resident.getEmailId(),resident.getFlatNumber(),resident.getBlock(),resident.getFloorNumber(),resident.getFlatType(),resident.getArea(),month,year,resident.getArea()*2,"NOT_PAID");
+				m=new MaintainenceBill(resident.getId(),resident.getOwnerName(),resident.getContactNumber(),resident.getEmailId(),resident.getFlatNumber(),resident.getBlock(),resident.getFloorNumber(),resident.getFlatType(),resident.getArea(),month,year,(float)(resident.getArea()*2),"NOT_PAID");
 				l2.add(m);
 			}
 			adminService.generateBills(l2);
@@ -168,4 +168,9 @@ public class SRMSController {
 			adminService.mailMaintainenceBill(bill);
 			return "redirect:/billListPage";
 		}
+		
+		@RequestMapping(value = "/logout", method = RequestMethod.GET)
+	    public String logout() {
+	        return "logout";
+	    }
 }

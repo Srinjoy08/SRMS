@@ -40,6 +40,12 @@ public class AdminServiceImpl implements AdminService {
 	}
 	@Override
 	@Transactional
+	public boolean checkFlat(Resident resident) {
+		// TODO Auto-generated method stub
+		return adminDao.checkFlat(resident);
+	}
+	@Override
+	@Transactional
 	public void addResident(Resident resident) {
 		// TODO Auto-generated method stub
 		adminDao.addResident(resident);

@@ -6,6 +6,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<title>Edit Resident Information</title>
 <meta charset="ISO-8859-1">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <spring:url value="/res/styles/" var="css" />
@@ -20,6 +21,7 @@
 	padding: 20px;
 	background-color: #f44336;
 	color: white;
+	width: 50%;
 }
 
 .closebtn {
@@ -37,17 +39,20 @@
 	color: black;
 }
 </style>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
- <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script> 
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<link rel="stylesheet"
+	href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
 <script>
-$(function() {
-  $("#dob").datepicker({
-	  changeMonth:true,
-	  changeYear:true,
-	  maxDate:-1
-  });
-});
+	$(function() {
+		$("#dob").datepicker({
+			changeMonth : true,
+			changeYear : true,
+			maxDate : -1
+		});
+	});
 </script>
 </head>
 <body>
@@ -59,6 +64,15 @@ body {
 	background-size: 100%;
 }
 </style>
+	<%
+		response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+		response.setIntHeader("Refresh", (10 * 60));
+	%>
+	<c:if test="${user eq null }">
+		<%
+			response.sendRedirect("/SRMS/loginAdminPage");
+		%>
+	</c:if>
 	<div class="container-fluid">
 		<div class="container-fluid">
 			<nav class="navbar navbar-expand-lg navbar-dark"
@@ -75,7 +89,7 @@ body {
 					</ul>
 					<ul class="navbar-nav mr-auto" style="text-align: center;">
 						<h4>
-							<b>Welcome Arya</b>
+							<b>Welcome ${user.firstName} ${user.lastName}</b>
 						</h4>
 					</ul>
 					<ul class="navbar-nav">
@@ -92,12 +106,6 @@ body {
 			</nav>
 		</div>
 		<br>
-		<style>
-body {
-	background-repeat: no-repeat;
-	background-size: 100%;
-}
-</style>
 		<div class="row">
 			<div class="col-md-4"></div>
 			<div class="col-md-8">
@@ -113,20 +121,20 @@ body {
 					<div class="alert">
 						<span class="closebtn"
 							onclick="this.parentElement.style.display='none';">&times;</span>
-						<strong>Email Id Already Exists!</strong>
+						<strong>Apartment Already Registered!</strong>
 					</div>
 					<br />
 				</c:if>
 
-				<form:form action="/SRMS/addNewResident" commandName="resident"
-					method="post">
+				<form:form action="/SRMS/editResident/${resident.id}"
+					commandName="resident" method="post">
 
 					<div class="row">
 						<div class="col-md-4">
 							<div class="form-group">
 								Owner's Name : <br>
 								<form:input path="ownerName" type="text" name="ownerName"
-									required="required" pattern="[A-Z]{1}[a-z]{3,}"
+									required="required" pattern="[A-Z]{1}[A-Za-z\s]{3,}"
 									title="Atleast 4 characters can be entered and the first character has to be Capital" />
 								<br>
 							</div>
@@ -144,21 +152,39 @@ body {
 
 					</div>
 					<div class="row">
-
 						<div class="col-md-4">
 							<div class="form-group">
 								Gender : <br>
 								<p style="padding-left: 70px">
-									<form:input path="gender" type="radio" value="M"
-										required="required" />
-									Male <br>
-									<form:input path="gender" type="radio" value="F"
-										required="required" />
-									Female <br>
+									<c:if test="${resident.gender == 'M'}">
+										<form:input path="gender" type="radio" value="M"
+											required="required" checked="true" />
+										Male <br>
+										<form:input path="gender" type="radio" value="F"
+											required="required" />
+										Female <br>
+									</c:if>
+									<c:if test="${resident.gender == 'F'}">
+										<form:input path="gender" type="radio" value="M"
+											required="required" />
+										Male <br>
+										<form:input path="gender" type="radio" value="F"
+											required="required" checked="true" />
+										Female <br>
+									</c:if>
 								</p>
 							</div>
 						</div>
-
+					</div>
+					<div class="row">
+						<div class="col-md-4">
+							<div class="form-group">
+								Date of Birth : <br>
+								<form:input path="dob" type="text" id="dob" readonly="true"
+									required="required" placeholder="dd/mm/yyyy" />
+								<br>
+							</div>
+						</div>
 						<div class="col-md-4">
 							<div class="form-group">
 								Contact No : <br>
@@ -237,8 +263,7 @@ body {
 						</div>
 						<div class="col-md-4">
 							<div class="form-group">
-								<label for="flatType" required="required">Select Flat
-									Type:</label>
+								<label for="flatType">Select Flat Type:</label>
 								<form:select path="flatType" class="form-control" id="flatType"
 									required="required">
 									<form:option value="1BHK">1BHK</form:option>
@@ -250,18 +275,6 @@ body {
 						</div>
 					</div>
 
-					<div class="row">
-
-
-						<div class="col-md-4">
-							<div class="form-group">
-								Date of Birth : <br>
-								<form:input path="dob" type="text" id="dob"
-									  readonly="true" required="required" placeholder="dd/mm/yyyy"/>
-								<br>
-							</div>
-						</div>
-					</div>
 					<br>
 					<br>
 
@@ -282,7 +295,7 @@ body {
 					</div>
 				</form:form>
 			</div>
-			
+
 		</div>
 	</div>
 </body>

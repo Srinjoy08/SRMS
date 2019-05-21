@@ -1,5 +1,6 @@
 package com.pack.dao;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Properties;
@@ -76,6 +77,26 @@ public class AdminDaoImpl implements AdminDao {
         else
         	return null;
 	}
+	
+	@Override
+	public boolean checkFlat(Resident resident)
+	{
+		Session s=this.sessionFactory.getCurrentSession();
+        Query q=s.createQuery("from Resident l where l.id!=:id and l.flatNumber=:flatNo and l.floorNumber=:floorNo and l.block=:block");
+        q.setParameter("id",resident.getId());
+        q.setParameter("flatNo",resident.getFlatNumber());
+        q.setParameter("floorNo", resident.getFloorNumber());
+        q.setParameter("block", resident.getBlock());
+        List<Resident> r=q.list();
+        System.out.println(r.size());
+        System.out.println("i m here");
+        if(r.size()>0) 
+        	return false;
+        else
+        	return true;
+	}
+		
+	
 	@Override
 	public void addResident(Resident resident) {
 		// TODO Auto-generated method stub
@@ -221,4 +242,5 @@ public class AdminDaoImpl implements AdminDao {
         q.setParameter("year", year);
         return (MaintainenceBill) q.uniqueResult();
 	}
+	
 }
